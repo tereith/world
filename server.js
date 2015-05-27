@@ -3,6 +3,7 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
+var path = require("path");
 
 
 /**
@@ -108,17 +109,8 @@ var SampleApp = function() {
     };
 
     /**
-     * Setup static resources
-     */
-    self.createStaticPaths = function() {
-        app.use(express.static(__dirname + '/bower_components/bootstrap/dist/'));
-        app.use(express.static(__dirname + '/bower_components/jquery/dist/'));
-    };
-
-
-    /**
      *  Initialize the server (express) and create the routes and register
-     *  the handlers.
+     *  the handlers and static resources.
      */
     self.initializeServer = function() {
         self.createRoutes();
@@ -128,6 +120,9 @@ var SampleApp = function() {
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
+        self.app.use(express.static(path.join(__dirname + '/bower_components/bootstrap/dist')));
+        self.app.use(express.static(path.join(__dirname + '/bower_components/jquery/dist')));
+        self.app.use(express.static(path.join(__dirname + '/node_modules')));
     };
 
 
@@ -138,7 +133,6 @@ var SampleApp = function() {
         self.setupVariables();
         self.populateCache();
         self.setupTerminationHandlers();
-        self.createStaticPaths();
 
         // Create the express server and routes.
         self.initializeServer();
