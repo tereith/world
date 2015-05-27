@@ -107,6 +107,14 @@ var SampleApp = function() {
         };
     };
 
+    /**
+     * Setup static resources
+     */
+    self.createStaticPaths = function() {
+        app.use(express.static(__dirname + '/bower_components/bootstrap/dist/'));
+        app.use(express.static(__dirname + '/bower_components/jquery/dist/'));
+    };
+
 
     /**
      *  Initialize the server (express) and create the routes and register
@@ -130,6 +138,7 @@ var SampleApp = function() {
         self.setupVariables();
         self.populateCache();
         self.setupTerminationHandlers();
+        self.createStaticPaths();
 
         // Create the express server and routes.
         self.initializeServer();
